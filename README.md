@@ -10,7 +10,7 @@ L'application embarque l'interface web dans une **WebView Android**, conserve l'
 
 <p align="center">
 
-[![LUMO Android](https://img.shields.io/badge/Android-Télécharger_LUMO_1.2-3DDC84?style=for-the-badge\&logo=android\&logoColor=white)](https://github.com/0x80070006/LUMO/releases/tag/lumo_v1.2)
+[![LUMO Android](https://img.shields.io/badge/Android-Télécharger_LUMO_1.2-3DDC84?style=for-the-badge\&logo=android\&logoColor=white)](https://github.com/0x80070006/LUMO/releases/download/lumo_v1.2/LUMO-1.2.apk)
 
 [![Release](https://img.shields.io/badge/GitHub-Release_lumo__v1.2-181717?style=for-the-badge\&logo=github\&logoColor=white)](https://github.com/0x80070006/LUMO/releases/tag/lumo_v1.2)
 
