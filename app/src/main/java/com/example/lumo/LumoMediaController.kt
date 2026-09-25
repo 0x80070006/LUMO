@@ -46,6 +46,7 @@ internal data class LumoPlaybackState(
     val title: String = "Lecture LUMO",
     val subtitle: String = "",
     val artworkUrl: String = "",
+    val artworkToken: String = "",
     val durationMs: Long = 0L,
     val positionMs: Long = 0L,
     val playing: Boolean = false,
@@ -73,7 +74,7 @@ internal class LumoMediaController(private val activity: Activity) {
     private var webView: WebView? = null
     private var playbackState = LumoPlaybackState()
     private var artwork: Bitmap? = null
-    private var lastArtworkUrl = ""
+    private var lastArtworkKey = ""
     private var lastNotificationFingerprint = ""
     private var permissionRequested = false
     private var notificationDismissed = false
@@ -193,6 +194,7 @@ internal class LumoMediaController(private val activity: Activity) {
                 title = data.optString("title").trim().ifBlank { "Lecture LUMO" },
                 subtitle = data.optString("subtitle").trim(),
                 artworkUrl = data.optString("artwork").trim(),
+                artworkToken = data.optString("artworkToken").trim(),
                 durationMs = data.optDouble("duration", 0.0).finiteSecondsToMs(),
                 positionMs = data.optDouble("position", 0.0).finiteSecondsToMs(),
                 playing = data.optBoolean("playing", false),
@@ -200,11 +202,23 @@ internal class LumoMediaController(private val activity: Activity) {
                 videoHeight = data.optInt("videoHeight", 9).coerceAtLeast(1),
                 mediaPresent = data.optBoolean("mediaPresent", true)
             )
-            val artworkChanged = newState.artworkUrl.isNotBlank() && newState.artworkUrl != lastArtworkUrl
+            val artworkKey = "${newState.artworkUrl}|${newState.artworkToken}"
+            val artworkChanged = newState.artworkUrl.isNotBlank() && artworkKey != lastArtworkKey
             if (newState.playing) notificationDismissed = false
+            if (newState.artworkUrl.isBlank() && newState.title != playbackState.title) {
+                artwork?.recycle()
+                artwork = null
+                lastArtworkKey = ""
+            }
+            if (artworkChanged) {
+                /* Never show the cover of the previous film while Jellyfin's
+                   protected image is being downloaded. */
+                artwork?.recycle()
+                artwork = null
+            }
             playbackState = newState
             publishState()
-            if (artworkChanged) loadArtwork(newState.artworkUrl)
+            if (artworkChanged) loadArtwork(newState.artworkUrl, newState.artworkToken)
         }
     }
 
@@ -248,6 +262,7 @@ internal class LumoMediaController(private val activity: Activity) {
             .putString(MediaMetadataCompat.METADATA_KEY_TITLE, playbackState.title)
             .putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_TITLE, playbackState.title)
             .putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_SUBTITLE, playbackState.subtitle)
+            .putString(MediaMetadataCompat.METADATA_KEY_ART_URI, playbackState.artworkUrl)
             .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, playbackState.durationMs)
         artwork?.let {
             builder.putBitmap(MediaMetadataCompat.METADATA_KEY_ART, it)
@@ -264,7 +279,7 @@ internal class LumoMediaController(private val activity: Activity) {
             playbackState.subtitle,
             playbackState.playing.toString(),
             playbackState.durationMs.toString(),
-            lastArtworkUrl,
+            lastArtworkKey,
             (artwork != null).toString()
         ).joinToString("|")
         if (!force && fingerprint == lastNotificationFingerprint) return
@@ -353,12 +368,13 @@ internal class LumoMediaController(private val activity: Activity) {
         }
     }
 
-    private fun loadArtwork(url: String) {
-        lastArtworkUrl = url
+    private fun loadArtwork(url: String, token: String) {
+        val artworkKey = "$url|$token"
+        lastArtworkKey = artworkKey
         artworkExecutor.execute {
-            val loaded = runCatching { downloadArtwork(url) }.getOrNull() ?: return@execute
+            val loaded = runCatching { downloadArtwork(url, token) }.getOrNull() ?: return@execute
             activity.runOnUiThread {
-                if (lastArtworkUrl == url) {
+                if (lastArtworkKey == artworkKey) {
                     artwork?.takeIf { it !== loaded }?.recycle()
                     artwork = loaded
                     updateMetadata()
@@ -370,7 +386,7 @@ internal class LumoMediaController(private val activity: Activity) {
         }
     }
 
-    private fun downloadArtwork(address: String): Bitmap? {
+    private fun downloadArtwork(address: String, accessToken: String): Bitmap? {
         val uri = Uri.parse(address)
         if (uri.scheme != "https" && uri.scheme != "http") return null
         val connection = (URL(address).openConnection() as HttpURLConnection).apply {
@@ -378,6 +394,7 @@ internal class LumoMediaController(private val activity: Activity) {
             readTimeout = 10_000
             instanceFollowRedirects = true
             CookieManager.getInstance().getCookie(address)?.let { setRequestProperty("Cookie", it) }
+            if (accessToken.isNotBlank()) setRequestProperty("X-Emby-Token", accessToken)
             setRequestProperty("User-Agent", webView?.settings?.userAgentString ?: "LUMO")
         }
         return try {
@@ -437,10 +454,15 @@ internal class LumoMediaController(private val activity: Activity) {
               let scanTimer = null;
 
               const accessibleDocuments = () => {
-                const documents = [document];
-                document.querySelectorAll('iframe').forEach(frame => {
-                  try { if (frame.contentDocument) documents.push(frame.contentDocument); } catch (_) {}
-                });
+                const documents = [];
+                const visit = (doc) => {
+                  if (!doc || documents.includes(doc)) return;
+                  documents.push(doc);
+                  doc.querySelectorAll('iframe').forEach(frame => {
+                    try { visit(frame.contentDocument); } catch (_) {}
+                  });
+                };
+                visit(document);
                 return documents;
               };
 
@@ -460,9 +482,19 @@ internal class LumoMediaController(private val activity: Activity) {
                 return '';
               };
 
-              const absoluteUrl = (value) => {
+              const absoluteUrl = (value, base = document.baseURI) => {
                 if (!value) return '';
-                try { return new URL(value, document.baseURI).href; } catch (_) { return ''; }
+                try { return new URL(value, base).href; } catch (_) { return ''; }
+              };
+
+              const jellyfinToken = () => {
+                try {
+                  const cinematic = JSON.parse(localStorage.getItem('cinematic_credentials') || '{}');
+                  if (cinematic.token) return cinematic.token;
+                  const credentials = JSON.parse(localStorage.getItem('jellyfin_credentials') || '{}');
+                  const server = credentials.Servers?.find(entry => entry.AccessToken);
+                  return server?.AccessToken || '';
+                } catch (_) { return ''; }
               };
 
               const metadata = () => {
@@ -494,7 +526,12 @@ internal class LumoMediaController(private val activity: Activity) {
                   mediaDocument.querySelector('.videoOsdBottom img')?.src,
                   mediaDocument.querySelector('.nowPlayingBar img')?.src
                 );
-                return { title, subtitle, artwork: absoluteUrl(image) };
+                return {
+                  title,
+                  subtitle,
+                  artwork: absoluteUrl(image, mediaDocument.baseURI),
+                  artworkToken: jellyfinToken()
+                };
               };
 
               const report = () => {
@@ -516,6 +553,7 @@ internal class LumoMediaController(private val activity: Activity) {
                   title: info.title,
                   subtitle: info.subtitle,
                   artwork: info.artwork,
+                  artworkToken: info.artworkToken,
                   duration: Number.isFinite(currentMedia.duration) ? currentMedia.duration : 0,
                   position: Number.isFinite(currentMedia.currentTime) ? currentMedia.currentTime : 0,
                   playing: !currentMedia.paused && !currentMedia.ended,
@@ -527,7 +565,7 @@ internal class LumoMediaController(private val activity: Activity) {
               const attach = (media) => {
                 if (!media || media === currentMedia) return;
                 currentMedia = media;
-                ['play', 'pause', 'playing', 'ended', 'loadedmetadata', 'durationchange', 'seeked']
+                ['play', 'pause', 'playing', 'ended', 'loadedmetadata', 'durationchange', 'seeked', 'timeupdate']
                   .forEach(event => media.addEventListener(event, report, { passive: true }));
                 if (reportTimer) clearInterval(reportTimer);
                 reportTimer = setInterval(report, 1000);
@@ -558,11 +596,12 @@ internal class LumoMediaController(private val activity: Activity) {
                 if (button) button.click();
               };
 
-              document.addEventListener('click', event => {
-                const trigger = event.target.closest?.('[data-action="play"][data-id]');
-                if (!trigger) return;
+              const scheduleNativeFallback = (trigger) => {
+                if (!trigger || trigger.dataset.lumoFallbackScheduled === 'true') return;
+                trigger.dataset.lumoFallbackScheduled = 'true';
                 window.__lumoFallbackOpening = false;
                 setTimeout(() => {
+                  delete trigger.dataset.lumoFallbackScheduled;
                   const activeMedia = findMedia();
                   if (window.__lumoFallbackOpening || (activeMedia && !activeMedia.paused && !activeMedia.ended)) return;
                   const layer = document.querySelector('#nativePlayerOverlay.preparing');
@@ -576,7 +615,18 @@ internal class LumoMediaController(private val activity: Activity) {
                   window.__lumoFallbackOpening = true;
                   try { window.__cinematicClosePlayer?.(false); } catch (_) {}
                   LumoAndroid.openNativePlayer(detailsUrl);
-                }, 3500);
+                }, 2800);
+              };
+
+              /* The cinematic interface starts playback from a same-origin
+                 Jellyfin iframe. Capture pointer input as well as click: some
+                 Android WebView builds delay or suppress the synthetic click
+                 while the iframe is moved into its loading overlay. */
+              document.addEventListener('pointerdown', event => {
+                scheduleNativeFallback(event.target.closest?.('[data-action="play"][data-id]'));
+              }, true);
+              document.addEventListener('click', event => {
+                scheduleNativeFallback(event.target.closest?.('[data-action="play"][data-id]'));
               }, true);
 
               new MutationObserver(window.__lumoScanMedia).observe(document.documentElement, {
@@ -598,18 +648,19 @@ internal class LumoMediaController(private val activity: Activity) {
                   clearInterval(timer);
                   return;
                 }
-                const button = [...document.querySelectorAll('button:not([disabled])')].find(element => {
-                  const name = (element.textContent || element.getAttribute('aria-label') || '')
-                    .trim().toLocaleLowerCase('fr');
+                const button = [...document.querySelectorAll('button:not([disabled]),a[role="button"]:not([aria-disabled="true"])')].find(element => {
+                  const name = [element.textContent, element.getAttribute('aria-label'), element.title]
+                    .filter(Boolean).join(' ').trim().toLocaleLowerCase('fr');
                   return element.getClientRects().length && (
-                    element.matches('.btnPlayOrResume,.btnPlay,.btnReplay,[data-action="resume"],[data-action="play"]') ||
-                    name === 'lire' || name === 'reprendre'
+                    element.matches('.btnPlayOrResume,.btnPlay,.btnReplay,[data-action="resume"],[data-action="play"],.itemAction[data-action="play"],.itemAction[data-action="resume"]') ||
+                    /(^|\\s)(lire|lecture|reprendre|play|resume)(\\s|$)/i.test(name)
                   );
                 });
                 if (button) {
                   button.focus();
                   button.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true }));
                   button.dispatchEvent(new PointerEvent('pointerup', { bubbles: true }));
+                  button.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
                   button.click();
                 }
                 if (attempts >= 150) clearInterval(timer);

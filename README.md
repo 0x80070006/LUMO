@@ -1,275 +1,132 @@
 <div align="center">
-  <img src="assets/branding/lumo-logo.png" alt="Logo LUMO" width="190">
+  <img src="assets/branding/lumo-logo.png" alt="LUMO" width="176">
 
-# LUMO
+# LUMO for Android
 
-**L'interface LUMO / Jellyfin dans une application Android dédiée.**
+### Le cinéma LUMO / Jellyfin, dans une application Android dédiée.
 
-WebView intégrée · Session persistante · Lecture vidéo · Contrôles multimédia Android · Picture-in-Picture
+WebView sécurisée · interface immersive · lecteur Jellyfin · contrôles multimédia Android · Picture-in-Picture
 
-[![LUMO Android](https://img.shields.io/badge/Android-Télécharger_LUMO_1.2-3DDC84?style=for-the-badge&logo=android&logoColor=white)](https://github.com/0x80070006/LUMO/releases/download/lumo_v1.2/LUMO-1.2.apk)
-[![Release](https://img.shields.io/badge/GitHub-Release_lumo__v1.2-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/0x80070006/LUMO/releases/tag/lumo_v1.2)
+[![Android](https://img.shields.io/badge/Android-7.0%2B-3DDC84?style=for-the-badge&logo=android&logoColor=white)](https://www.android.com/)
+[![Version](https://img.shields.io/badge/version-1.3-FFC84A?style=for-the-badge)](https://github.com/0x80070006/LUMO/tags)
+[![Jellyfin](https://img.shields.io/badge/compatible-Jellyfin-00A4DC?style=for-the-badge)](https://jellyfin.org/)
 
 </div>
 
 > [!WARNING]
-> **LUMO est un client Android pour votre propre interface LUMO / Jellyfin.** L'application ne fournit ni serveur Jellyfin ni catalogue de contenus. L'adresse configurée doit être accessible depuis le téléphone. Si votre serveur est privé via **Tailscale**, connectez d'abord le téléphone au Tailnet. Pour l'installation de l'APK hors Play Store, Android peut également demander d'autoriser temporairement l'installation depuis la source utilisée.
+> LUMO est un client pour **votre propre** interface LUMO / Jellyfin. Il ne fournit ni serveur, ni compte, ni contenu. Si votre serveur est privé, le téléphone doit pouvoir le joindre — par exemple au moyen de Tailscale.
 
----
+## Ce que fait l’application
 
-## 📦 Télécharger LUMO
-
-### Dernière version : **LUMO 1.2**
-
-<p align="center">
-
-[![Télécharger l'APK](https://img.shields.io/badge/TÉLÉCHARGER-LUMO--1.2.apk-FFC84A?style=for-the-badge&logo=android&logoColor=111111)](https://github.com/0x80070006/LUMO/releases/download/lumo_v1.2/LUMO-1.2.apk)
-[![Voir la release](https://img.shields.io/badge/VOIR_LA_RELEASE-lumo__v1.2-2F3136?style=for-the-badge&logo=github&logoColor=white)](https://github.com/0x80070006/LUMO/releases/tag/lumo_v1.2)
-
-</p>
-
-L'APK Android est disponible dans les **Assets** de la release GitHub.
-
----
-
-## ✨ LUMO en bref
-
-LUMO transforme votre interface web LUMO / Jellyfin en une expérience Android dédiée. L'application embarque l'interface dans une **WebView**, mémorise l'adresse du serveur, conserve la session de connexion et ajoute des fonctions natives autour de la lecture multimédia.
-
-| Fonction | Ce que LUMO apporte |
+| Fonction | Détail |
 | --- | --- |
-| 🌐 **Interface intégrée** | LUMO / Jellyfin s'ouvre directement dans l'application |
-| 🔐 **Session persistante** | Adresse du serveur, cookies et session conservés |
-| 🎬 **Lecture vidéo** | Compatibilité renforcée avec le lecteur et les iframes Jellyfin |
-| 🔔 **Contrôles Android** | Lecture/pause, précédent, suivant, progression et informations du média |
-| 🖼️ **Picture-in-Picture** | La vidéo peut rester visible au-dessus des autres applications |
-| 🔒 **Gestion de la veille** | Mise en pause lors du verrouillage de l'écran |
-| 🔄 **Récupération réseau** | Réessayer ou changer l'adresse si le serveur ne répond plus |
-| 🛡️ **Usage privé** | Compatible avec un serveur accessible via Tailscale |
+| Interface LUMO | Ouvre votre interface cinématique directement dans l’application, sans navigateur externe. |
+| Première connexion | Propose l’URL du serveur au premier lancement, puis la conserve sur l’appareil. |
+| Session Jellyfin | Laisse Jellyfin conserver sa session WebView privée entre les lancements. |
+| Lecture robuste | Détecte le lecteur, y compris à travers les iframes Jellyfin, et bascule vers le lecteur natif lorsque l’interface cinématique reste en attente. |
+| Écran de chargement | Affiche une transition LUMO lors de l’ouverture de la médiathèque ou d’un lecteur. |
+| Notification multimédia | Affiche le titre et la jaquette du média, avec précédent, lecture/pause, suivant et position de lecture. |
+| Recherche dans la lecture | Publie une session média Android avec durée et position : le curseur de la notification peut être déplacé sur les systèmes qui exposent ce contrôle. |
+| Veille et PiP | Met la vidéo en pause au verrouillage de l’écran et ouvre le Picture-in-Picture au retour à l’accueil pendant une lecture. |
+| Plein écran | Masque les barres système ; un balayage depuis le bord les révèle temporairement. |
 
----
-
-## 📱 Aperçu de l'application
-
-### Interface LUMO
+## Aperçu
 
 <p align="center">
-  <img src="assets/screenshots/accueil.png" alt="Accueil LUMO" width="360">
+  <img src="assets/screenshots/accueil.png" alt="Accueil LUMO" width="330">
 </p>
-
-### Configuration, récupération et autorisations
 
 <table>
   <tr>
-    <td align="center"><img src="assets/screenshots/configuration.png" alt="Configuration de l'adresse LUMO" width="250"><br><sub><b>Configuration du serveur</b></sub></td>
-    <td align="center"><img src="assets/screenshots/erreur-connexion.png" alt="Erreur de connexion LUMO" width="250"><br><sub><b>Récupération après erreur</b></sub></td>
-    <td align="center"><img src="assets/screenshots/permission-notifications.png" alt="Permission de notifications Android" width="250"><br><sub><b>Autorisation des notifications</b></sub></td>
+    <td align="center"><img src="assets/screenshots/configuration.png" alt="Configuration" width="220"><br><sub>Configuration de l’adresse</sub></td>
+    <td align="center"><img src="assets/screenshots/controles-multimedia.png" alt="Contrôles multimédia" width="220"><br><sub>Contrôles multimédia Android</sub></td>
+    <td align="center"><img src="assets/screenshots/picture-in-picture.png" alt="Picture-in-Picture" width="220"><br><sub>Picture-in-Picture</sub></td>
   </tr>
 </table>
 
-### Expérience multimédia Android
+## Installer sur un Pixel / GrapheneOS
 
-<table>
-  <tr>
-    <td align="center"><img src="assets/screenshots/controles-multimedia.png" alt="Contrôles multimédia Android de LUMO" width="310"><br><sub><b>Contrôles multimédia système</b></sub></td>
-    <td align="center"><img src="assets/screenshots/picture-in-picture.png" alt="Picture-in-Picture de LUMO" width="310"><br><sub><b>Picture-in-Picture</b></sub></td>
-  </tr>
-</table>
+1. Construisez l’APK depuis les sources comme indiqué ci-dessous, ou récupérez-le depuis une release GitHub lorsqu’une release est publiée.
+2. Copiez l’APK sur le téléphone et ouvrez-le. GrapheneOS peut demander d’autoriser l’installation depuis l’application utilisée pour l’ouvrir.
+3. Au premier démarrage, contrôlez l’adresse proposée puis touchez **Ouvrir LUMO**.
+4. Connectez Tailscale avant de lancer LUMO si le serveur utilise un domaine privé `*.ts.net`.
+5. À la première lecture, accordez la permission de notifications : c’est nécessaire pour les commandes multimédia système.
 
----
+L’adresse et les données WebView restent dans le stockage privé de l’application. Pour repartir de zéro, effacez les données de LUMO dans les paramètres Android.
 
-## ⚙️ Premier lancement
-
-Au premier démarrage, LUMO affiche un écran de configuration. Entrez simplement l'adresse complète de votre interface web :
+## Utilisation
 
 ```text
-https://votre-serveur.example.com/
-```
-
-Puis appuyez sur **Ouvrir LUMO**.
-
-Une fois l'adresse enregistrée :
-
-```text
-Lancement de l'application
+Ouverture de LUMO
         ↓
-Adresse déjà enregistrée
+URL déjà mémorisée ?
         ↓
-Chargement de LUMO
+Connexion à l’interface et restauration de session Jellyfin
         ↓
-Session existante restaurée
+Lecture depuis l’interface cinématique
+        ↓
+Contrôles Android, notification et Picture-in-Picture
 ```
 
-Vous n'avez donc pas besoin de saisir l'adresse à chaque démarrage.
+### Lecture vidéo
 
----
+L’interface cinématique LUMO prépare parfois le lecteur Jellyfin dans des iframes. Android WebView peut retarder ce parcours. LUMO surveille donc tous les documents accessibles du lecteur et, si l’ouverture reste bloquée, ouvre la fiche Jellyfin native puis déclenche son action de lecture. Cette solution préserve le lecteur Jellyfin, ses flux et ses choix audio/sous-titres.
 
-## 🌐 Interface LUMO intégrée
+### Notification et jaquette
 
-L'application affiche directement l'interface web LUMO dans une WebView Android. Elle prend notamment en charge :
+La session média Android est synchronisée avec l’élément vidéo : état, durée, position, titre et sous-titre. La jaquette est demandée à Jellyfin avec le jeton de session de la WebView afin que les illustrations de bibliothèques privées soient affichées correctement. Lors du changement de film, l’ancienne jaquette est retirée avant le chargement de la nouvelle.
 
-- l'authentification LUMO / Jellyfin ;
-- les cookies et la session persistante ;
-- JavaScript ;
-- la lecture vidéo ;
-- la navigation dans les films et séries ;
-- le bouton **Retour** d'Android ;
-- le stockage local de l'adresse du serveur ;
-- la récupération après une erreur de connexion.
+La présence exacte du curseur et son apparence dépendent de la version Android et du panneau de notifications de l’appareil. La session expose toutefois bien l’action de recherche (`seek`) à Android.
 
----
+## Compiler le projet
 
-## 🎬 Lecture vidéo
+### Prérequis
 
-**LUMO 1.2** améliore la compatibilité avec le lecteur vidéo utilisé par l'interface LUMO et Jellyfin.
+- Android Studio récent avec le SDK Android 36 ;
+- JDK 11 ou supérieur ;
+- un appareil ou émulateur Android 7.0+ (API 24).
 
-L'application peut détecter le lecteur multimédia même lorsqu'il est chargé dans une **iframe Jellyfin**. Lorsqu'une lecture reste bloquée dans l'interface intégrée, LUMO peut basculer vers le lecteur Jellyfin afin de permettre le démarrage du film ou de l'épisode.
+```powershell
+git clone https://github.com/0x80070006/LUMO.git
+cd LUMO
+.\gradlew.bat testDebugUnitTest lintDebug assembleDebug
+```
 
----
-
-## 🔔 Contrôles multimédia Android
-
-Pendant la lecture, LUMO utilise les fonctions multimédia natives d'Android. Les contrôles système peuvent afficher :
-
-- le titre du film ou de l'épisode ;
-- la jaquette du média ;
-- précédent ;
-- lecture / pause ;
-- suivant ;
-- la progression de la lecture ;
-- les informations de la lecture en cours.
-
-Les commandes restent ainsi accessibles depuis Android sans devoir revenir immédiatement dans l'application.
-
-> [!IMPORTANT]
-> Sur les versions modernes d'Android, autorisez les **notifications** si vous souhaitez profiter pleinement des contrôles multimédia système. Sans cette autorisation, la lecture vidéo reste possible, mais certains contrôles peuvent ne pas être affichés.
-
----
-
-## 🖼️ Picture-in-Picture
-
-LUMO prend en charge le mode **Picture-in-Picture** d'Android. Lorsque vous revenez à l'écran d'accueil pendant une lecture, la vidéo peut continuer dans une petite fenêtre flottante au-dessus des autres applications.
-
-Cela permet par exemple d'ouvrir une autre application, répondre à un message ou consulter une page web tout en gardant la vidéo visible. Lorsque la fenêtre Picture-in-Picture est fermée, LUMO arrête ou met en pause la lecture.
-
----
-
-## 🔒 Mise en veille et plein écran
-
-Lorsque le téléphone est verrouillé pendant la lecture :
+L’APK est alors disponible ici :
 
 ```text
-Lecture vidéo
-      ↓
-Écran verrouillé
-      ↓
-Vidéo mise en pause
-      ↓
-Contrôles multimédia toujours disponibles
+app\build\outputs\apk\debug\app-debug.apk
 ```
 
-LUMO utilise également un mode immersif afin de laisser le maximum d'espace à l'interface et à la vidéo. La barre de statut Android peut être masquée pendant l'utilisation.
-
----
-
-## 🔄 Changer l'adresse du serveur
-
-Si le serveur est inaccessible, LUMO affiche un écran de récupération avec deux possibilités :
-
-- **Réessayer** : tente de recharger le serveur actuellement enregistré ;
-- **Changer l'adresse** : revient à la configuration pour saisir une nouvelle URL LUMO.
-
-Cette récupération permet de corriger rapidement une URL devenue invalide ou un serveur temporairement indisponible.
-
----
-
-## 🔐 Utilisation avec Tailscale
-
-LUMO peut être utilisé avec un serveur uniquement accessible à travers **Tailscale**, ce qui permet d'accéder à Jellyfin à distance sans exposer directement le serveur multimédia sur Internet.
+## Structure du dépôt
 
 ```text
-┌──────────────────────┐
-│ Téléphone Android    │
-│ LUMO                 │
-└──────────┬───────────┘
-           │
-           │ Tailscale
-           │
-┌──────────▼───────────┐
-│ Serveur LUMO         │
-│ + Jellyfin           │
-└──────────────────────┘
+app/
+  src/main/java/com/example/lumo/
+    MainActivity.kt             # Écran de configuration, WebView et PiP
+    LumoMediaController.kt      # Pont Jellyfin, MediaSession et notification
+  src/main/res/                 # Icône et identité visuelle
+gradle/                         # Gradle Wrapper
+assets/                         # Logo et captures pour la documentation
 ```
 
-Avant d'ouvrir LUMO, vérifiez que **Tailscale est connecté sur le téléphone** et que l'adresse du serveur est joignable depuis le Tailnet.
+## Dépannage
 
----
-
-## 📱 GrapheneOS
-
-L'application peut être utilisée sur Android moderne, y compris **GrapheneOS**. Aucun navigateur externe n'est nécessaire une fois l'application configurée.
-
-Pour un serveur privé accessible via Tailscale :
-
-1. installez Tailscale ;
-2. connectez le téléphone au Tailnet ;
-3. installez LUMO ;
-4. autorisez les notifications si vous souhaitez les contrôles multimédia ;
-5. saisissez l'adresse du serveur LUMO ;
-6. connectez-vous à votre compte ;
-7. lancez un film ou une série.
-
----
-
-## 🔊 Session multimédia
-
-LUMO communique avec Android à travers une session multimédia. Le système peut ainsi suivre :
-
-```text
-Média actuel
-Titre
-Jaquette
-État lecture / pause
-Position
-Durée
-Actions disponibles
-```
-
-Les contrôles Android peuvent alors rester synchronisés avec le lecteur LUMO / Jellyfin.
-
----
-
-## 🍿 Jellyfin
-
-LUMO agit comme une couche Android autour de votre interface LUMO / Jellyfin. Votre bibliothèque, vos utilisateurs, votre authentification et vos médias restent gérés par votre installation Jellyfin et par l'interface web que vous configurez dans l'application.
-
-LUMO n'héberge pas les médias : il se connecte à l'adresse que vous lui fournissez.
-
----
-
-## 🧰 Dépannage rapide
-
-| Problème | Vérification |
+| Symptôme | À vérifier |
 | --- | --- |
-| `net::ERR_NAME_NOT_RESOLVED` | Vérifiez le nom d'hôte, le DNS et l'URL saisie |
-| Serveur privé inaccessible | Vérifiez que Tailscale est connecté |
-| Contrôles Android absents | Vérifiez l'autorisation de notifications |
-| Mauvaise adresse enregistrée | Utilisez **Changer l'adresse** |
-| Lecture bloquée | Rechargez la page puis relancez le média |
+| LUMO ne s’ouvre pas | L’URL, le DNS et la connexion Tailscale. |
+| Le serveur demande une connexion | Connectez-vous dans l’écran LUMO ; la session est ensuite mémorisée dans la WebView. |
+| Film bloqué sur le chargement | Patientez quelques secondes : la bascule vers Jellyfin natif doit se lancer. Sinon rechargez la page puis relancez le média. |
+| Jaquette ou commandes absentes | Autorisez les notifications et vérifiez que la lecture est démarrée. |
+| URL incorrecte mémorisée | Utilisez **Changer l’adresse** depuis l’écran d’erreur, ou effacez les données de LUMO. |
 
----
+## Confidentialité
 
-## 🚀 Release actuelle
+LUMO ne transmet pas votre bibliothèque vers un service tiers. L’application communique uniquement avec l’adresse configurée par l’utilisateur. Les identifiants, cookies et jetons de Jellyfin restent dans le stockage privé de la WebView Android et servent uniquement à accéder à votre serveur, notamment pour récupérer la jaquette de la lecture en cours.
 
-**LUMO 1.2** — dernière release publiée :
+## Crédits
 
-- **APK direct :** [LUMO-1.2.apk](https://github.com/0x80070006/LUMO/releases/download/lumo_v1.2/LUMO-1.2.apk)
-- **Page de release :** [lumo_v1.2](https://github.com/0x80070006/LUMO/releases/tag/lumo_v1.2)
+- [Jellyfin](https://jellyfin.org/) pour le serveur multimédia libre ;
+- [Tailscale](https://tailscale.com/) pour l’accès privé au serveur lorsque vous choisissez de l’utiliser.
 
----
-
-<div align="center">
-  <img src="assets/branding/lumo-logo.png" alt="LUMO" width="90">
-  <br>
-  <strong>LUMO — votre interface multimédia, directement sur Android.</strong>
-</div>
+LUMO n’est pas affilié à Jellyfin ou à Tailscale.

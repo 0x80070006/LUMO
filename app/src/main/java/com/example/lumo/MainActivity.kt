@@ -357,10 +357,7 @@ private fun LumoWebView(initialUrl: String, onChangeAddress: () -> Unit) {
         )
 
         if (loading && loadError == null) {
-            CircularProgressIndicator(
-                modifier = Modifier.align(Alignment.Center),
-                color = ComposeColor(0xFFFFC94A)
-            )
+            LumoLoadingScreen(modifier = Modifier.fillMaxSize())
         }
 
         loadError?.let { message ->
@@ -397,6 +394,38 @@ private fun LumoWebView(initialUrl: String, onChangeAddress: () -> Unit) {
                 destroy()
             }
         }
+    }
+}
+
+@Composable
+private fun LumoLoadingScreen(modifier: Modifier = Modifier) {
+    Column(
+        modifier = modifier
+            .background(ComposeColor(0xF9080808))
+            .padding(32.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Image(
+            bitmap = androidx.compose.ui.graphics.ImageBitmap.imageResource(R.drawable.lumo_logo),
+            contentDescription = "LUMO",
+            modifier = Modifier.size(108.dp)
+        )
+        Spacer(Modifier.height(18.dp))
+        CircularProgressIndicator(color = ComposeColor(0xFFFFC94A))
+        Spacer(Modifier.height(18.dp))
+        Text(
+            text = "Préparation de votre cinéma…",
+            color = ComposeColor.White,
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.SemiBold
+        )
+        Spacer(Modifier.height(6.dp))
+        Text(
+            text = "Connexion sécurisée à votre médiathèque LUMO",
+            color = ComposeColor(0xFFBEBEBE),
+            style = MaterialTheme.typography.bodyMedium
+        )
     }
 }
 
