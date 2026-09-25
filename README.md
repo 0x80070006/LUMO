@@ -16,6 +16,11 @@ WebView sécurisée · interface immersive · lecteur Jellyfin · contrôles mul
 > [!WARNING]
 > LUMO est un client pour **votre propre** interface LUMO / Jellyfin. Il ne fournit ni serveur, ni compte, ni contenu. Si votre serveur est privé, le téléphone doit pouvoir le joindre — par exemple au moyen de Tailscale.
 
+<p align="center">
+  <a href="https://github.com/0x80070006/LUMO/releases/download/lumo_v1.3/LUMO-1.3-debug.apk"><img src="https://img.shields.io/badge/T%C3%A9l%C3%A9charger-LUMO%201.3-FFC84A?style=for-the-badge&logo=android&logoColor=111111" alt="Télécharger LUMO 1.3"></a>
+  <a href="https://github.com/0x80070006/LUMO/releases/tag/lumo_v1.3"><img src="https://img.shields.io/badge/Notes%20de%20version-lumo__v1.3-24292F?style=for-the-badge&logo=github&logoColor=white" alt="Notes de version"></a>
+</p>
+
 ## Ce que fait l’application
 
 | Fonction | Détail |
@@ -46,7 +51,7 @@ WebView sécurisée · interface immersive · lecteur Jellyfin · contrôles mul
 
 ## Installer sur un Pixel / GrapheneOS
 
-1. Construisez l’APK depuis les sources comme indiqué ci-dessous, ou récupérez-le depuis une release GitHub lorsqu’une release est publiée.
+1. Téléchargez [LUMO-1.3-debug.apk](https://github.com/0x80070006/LUMO/releases/download/lumo_v1.3/LUMO-1.3-debug.apk), ou construisez l’APK depuis les sources comme indiqué ci-dessous.
 2. Copiez l’APK sur le téléphone et ouvrez-le. GrapheneOS peut demander d’autoriser l’installation depuis l’application utilisée pour l’ouvrir.
 3. Au premier démarrage, contrôlez l’adresse proposée puis touchez **Ouvrir LUMO**.
 4. Connectez Tailscale avant de lancer LUMO si le serveur utilise un domaine privé `*.ts.net`.
