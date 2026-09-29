@@ -1,17 +1,16 @@
-<div align="center">
-  <img src="assets/branding/lumo-logo.png" alt="LUMO" width="176">
+# LUMO pour Android
 
-# LUMO for Android
+Application Android dédiée à l'interface LUMO / Jellyfin : WebView, lecture multimédia, contrôles Android et Picture-in-Picture.
 
-### Le cinéma LUMO / Jellyfin, dans une application Android dédiée.
+**État :** projet Android complet publié et compilation de la version 1.3 validée lors de sa publication. La lecture sur téléphone physique et la compatibilité avec toute installation Jellyfin n'ont pas été vérifiées dans cet audit. L'APK disponible est un **build debug**, à réserver aux essais personnels.
 
-WebView sécurisée · interface immersive · lecteur Jellyfin · contrôles multimédia Android · Picture-in-Picture
+[Télécharger LUMO 1.3 debug](https://github.com/0x80070006/LUMO/releases/download/lumo_v1.3/LUMO-1.3-debug.apk) · [Toutes les versions](https://github.com/0x80070006/LUMO/releases)
 
-[![Android](https://img.shields.io/badge/Android-7.0%2B-3DDC84?style=for-the-badge&logo=android&logoColor=white)](https://www.android.com/)
-[![Version](https://img.shields.io/badge/version-1.3-FFC84A?style=for-the-badge)](https://github.com/0x80070006/LUMO/tags)
-[![Jellyfin](https://img.shields.io/badge/compatible-Jellyfin-00A4DC?style=for-the-badge)](https://jellyfin.org/)
+Les anciens tags conservent leurs noms historiques pour maintenir les liens existants. Les futures versions devraient employer un tag `vMAJEUR.MINEUR.CORRECTIF` et une version Android identique.
 
-</div>
+## Technologies
+
+Kotlin, Jetpack Compose, Android WebView, AndroidX Media et Gradle. Les versions précises sont dans [gradle/libs.versions.toml](gradle/libs.versions.toml). Jellyfin est un service externe à configurer séparément.
 
 > [!WARNING]
 > LUMO est un client pour **votre propre** interface LUMO / Jellyfin. Il ne fournit ni serveur, ni compte, ni contenu. Si votre serveur est privé, le téléphone doit pouvoir le joindre — par exemple au moyen de Tailscale.
