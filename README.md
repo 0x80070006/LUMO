@@ -4,9 +4,9 @@ Application Android dédiée à l'interface LUMO / Jellyfin : WebView, lecture m
 
 **État :** projet Android complet publié et compilation de la version 1.3 validée lors de sa publication. La lecture sur téléphone physique et la compatibilité avec toute installation Jellyfin n'ont pas été vérifiées dans cet audit. L'APK disponible est un **build debug**, à réserver aux essais personnels.
 
-[Télécharger LUMO 1.3 debug](https://github.com/0x80070006/LUMO/releases/download/lumo_v1.3/LUMO-1.3-debug.apk) · [Toutes les versions](https://github.com/0x80070006/LUMO/releases)
+[Télécharger LUMO 1.3 debug](https://github.com/0x80070006/LUMO/releases/download/v1.3.0/LUMO-v1.3.0-debug.apk) · [Toutes les versions](https://github.com/0x80070006/LUMO/releases)
 
-Les anciens tags conservent leurs noms historiques pour maintenir les liens existants. Les futures versions devraient employer un tag `vMAJEUR.MINEUR.CORRECTIF` et une version Android identique.
+Les tags et les APK publiés suivent désormais `vMAJEUR.MINEUR.CORRECTIF`. La version Android interne reste `1.3` pour cette publication.
 
 ## Technologies
 
@@ -15,10 +15,7 @@ Kotlin, Jetpack Compose, Android WebView, AndroidX Media et Gradle. Les versions
 > [!WARNING]
 > LUMO est un client pour **votre propre** interface LUMO / Jellyfin. Il ne fournit ni serveur, ni compte, ni contenu. Si votre serveur est privé, le téléphone doit pouvoir le joindre — par exemple au moyen de Tailscale.
 
-<p align="center">
-  <a href="https://github.com/0x80070006/LUMO/releases/download/lumo_v1.3/LUMO-1.3-debug.apk"><img src="https://img.shields.io/badge/T%C3%A9l%C3%A9charger-LUMO%201.3-FFC84A?style=for-the-badge&logo=android&logoColor=111111" alt="Télécharger LUMO 1.3"></a>
-  <a href="https://github.com/0x80070006/LUMO/releases/tag/lumo_v1.3"><img src="https://img.shields.io/badge/Notes%20de%20version-lumo__v1.3-24292F?style=for-the-badge&logo=github&logoColor=white" alt="Notes de version"></a>
-</p>
+[Notes de la version v1.3.0](https://github.com/0x80070006/LUMO/releases/tag/v1.3.0)
 
 ## Ce que fait l’application
 
@@ -50,7 +47,7 @@ Kotlin, Jetpack Compose, Android WebView, AndroidX Media et Gradle. Les versions
 
 ## Installer sur un Pixel / GrapheneOS
 
-1. Téléchargez [LUMO-1.3-debug.apk](https://github.com/0x80070006/LUMO/releases/download/lumo_v1.3/LUMO-1.3-debug.apk), ou construisez l’APK depuis les sources comme indiqué ci-dessous.
+1. Téléchargez [LUMO-v1.3.0-debug.apk](https://github.com/0x80070006/LUMO/releases/download/v1.3.0/LUMO-v1.3.0-debug.apk), ou construisez l’APK depuis les sources comme indiqué ci-dessous.
 2. Copiez l’APK sur le téléphone et ouvrez-le. GrapheneOS peut demander d’autoriser l’installation depuis l’application utilisée pour l’ouvrir.
 3. Au premier démarrage, contrôlez l’adresse proposée puis touchez **Ouvrir LUMO**.
 4. Connectez Tailscale avant de lancer LUMO si le serveur utilise un domaine privé `*.ts.net`.
