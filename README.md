@@ -2,11 +2,11 @@
 
 Application Android dédiée à l'interface LUMO / Jellyfin : WebView, lecture multimédia, contrôles Android et Picture-in-Picture.
 
-**État :** projet Android complet publié et compilation de la version 1.3 validée lors de sa publication. La lecture sur téléphone physique et la compatibilité avec toute installation Jellyfin n'ont pas été vérifiées dans cet audit. L'APK disponible est un **build debug**, à réserver aux essais personnels.
+**État :** projet Android complet ; la version 1.3 compile depuis ce dépôt. L'APK disponible est un **build debug**, à réserver aux essais personnels. Le comportement peut varier selon le téléphone et l'installation Jellyfin.
 
 [Télécharger LUMO 1.3 debug](https://github.com/0x80070006/LUMO/releases/download/v1.3.0/LUMO-v1.3.0-debug.apk) · [Toutes les versions](https://github.com/0x80070006/LUMO/releases)
 
-Les tags et les APK publiés suivent désormais `vMAJEUR.MINEUR.CORRECTIF`. La version Android interne reste `1.3` pour cette publication.
+Les tags et les APK suivent le format `vMAJEUR.MINEUR.CORRECTIF`. La version Android interne reste `1.3` pour cette publication.
 
 ## Technologies
 
